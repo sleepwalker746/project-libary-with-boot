@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Список книг</title>
+
+    <style>
+        .pagination {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+            display: flex;
+            gap: 8px;
+        }
+
+        .pagination li a {
+            text-decoration: none;
+            padding: 4px 8px;
+            border: 1px solid #ccc;
+            color: #333;
+            border-radius: 4px;
+        }
+
+        .pagination li a.active {
+            background-color: #333;
+            color: white;
+        }
+
+        .pagination li a:hover {
+            background-color: #eee;
+        }
+    </style>
+
+</head>
+<body>
+
+<p>
+    Сортировать по:
+    <a th:href="@{/books(page=0, size=5, sortBy='year')}">Году</a> |
+    <a th:href="@{/books(page=0, size=5, sortBy='title')}">Названию</a> |
+    <a th:href="@{/books(page=0, size=5, sortBy='author')}">Автору</a>
+</p>
+
+<div th:each="book : ${books}">
+    <a th:href="@{/books/{id}(id=${book.getId()})}"
+       th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYear()}">book</a>
+</div>
+
+<div>
+    <p>Страница <span th:text="${currentPage + 1}"></span> из <span th:text="${totalPages}"></span></p>
+
+    <ul class="pagination">
+        <li th:if="${currentPage > 0}">
+            <a th:href="@{/books(page=${currentPage - 1}, size=5)}">Предыдущая</a>
+        </li>
+
+        <li th:if="${currentPage < totalPages - 1}">
+            <a th:href="@{/books(page=${currentPage + 1}, size=5)}">Следующая</a>
+        </li>
+    </ul>
+</div>
+
+
+<br/>
+<hr/>
+
+<a href="/books/new">Добавьте книгу</a>
+
+</body>
+</html>
