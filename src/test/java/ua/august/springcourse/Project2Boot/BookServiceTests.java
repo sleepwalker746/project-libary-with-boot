@@ -6,7 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ua.august.springcourse.Project2Boot.models.Book;
+import ua.august.springcourse.Project2Boot.entities.Book;
 import ua.august.springcourse.Project2Boot.repositories.BookRepository;
 import ua.august.springcourse.Project2Boot.services.BookService;
 
@@ -28,7 +28,7 @@ public class BookServiceTests {
     @DisplayName("Проверка работы метода findById при наличии книги в БД")
     @Test
     void shouldReturnBookWhenExists() {
-        Book book = new Book(1, "Title", "Author", 2020, null);
+        Book book = new Book(1, "Title", "Author", 2020, null, null);
         // arrange
         when(bookRepository.findById(1)).thenReturn(Optional.of(book));
 

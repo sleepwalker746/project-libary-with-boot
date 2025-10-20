@@ -2,7 +2,7 @@ package ua.august.springcourse.Project2Boot.repositories;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ua.august.springcourse.Project2Boot.models.Book;
+import ua.august.springcourse.Project2Boot.entities.Book;
 
 import java.util.List;
 

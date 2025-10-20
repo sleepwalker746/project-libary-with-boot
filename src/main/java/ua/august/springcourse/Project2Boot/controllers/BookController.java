@@ -7,8 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ua.august.springcourse.Project2Boot.models.Book;
-import ua.august.springcourse.Project2Boot.models.Person;
+import ua.august.springcourse.Project2Boot.entities.Book;
+import ua.august.springcourse.Project2Boot.entities.Person;
 import ua.august.springcourse.Project2Boot.services.BookService;
 import ua.august.springcourse.Project2Boot.services.PeopleService;
 
@@ -45,7 +45,10 @@ public class BookController {
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model, @ModelAttribute("person") Person person) {
+
         model.addAttribute("book", bookService.findOne(id));
+
+        model.addAttribute("overdue", bookService.isOverdue(id));
 
         Optional<Person> bookOwner = bookService.getBookOwner(id);
         if (bookOwner.isPresent())

@@ -5,12 +5,21 @@
     <title>Книга</title>
 </head>
 <body>
-<p th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYear()}">VALUE</p>
+<p th:text="${book.title + ', ' + book.author + ', ' + book.year}">VALUE</p>
 
 <div th:if="${owner}">
-    <span>Книга сейчас у: </span> <span th:text="${owner.getName()}">Name</span>
+    <span>Книга сейчас у: </span> <span th:text="${owner.name}">Name</span>
 
-    <form th:method="PATCH" th:action="@{/books/{id}/release(id=${book.getId()})}">
+    <div th:if="${overdue}" th:style="'color: red; font-weight: bold;'">
+        КНИГА ПРОСРОЧЕНА!
+    </div>
+
+    <div th:if="${book.tookAt != null && !overdue}" th:style="'color: green; font-weight: bold;'">
+        Вернуть до:
+        <span th:text="${#temporals.format(book.tookAt.plusDays(10), 'dd.MM.yyyy')}"></span>
+    </div>
+
+    <form th:method="PATCH" th:action="@{/books/{id}/release(id=${book.id})}">
         <input type="submit" value="Освободить книгу">
     </form>
 </div>
@@ -18,21 +27,23 @@
 <div th:if="${people}">
     <span>Эта книга свободна. Кому её назначить?</span>
 
-    <form th:method="PATCH" th:action="@{/books/{id}/assign(id=${book.getId()})}">
+    <form th:method="PATCH" th:action="@{/books/{id}/assign(id=${book.id})}">
         <label for="person">Выберите человека</label>
         <select th:object="${person}" th:field="*{id}" id="person">
-            <option th:each="person : ${people}" th:value="${person.getId()}" th:text="${person.getName()}">
+            <option th:each="person : ${people}" th:value="${person.id}" th:text="${person.name}">
             </option>
         </select>
         <input type="submit" value="Назначить книгу"/>
     </form>
 </div>
 
-<form th:method="GET" th:action="@{/books/{id}/edit(id=${book.getId()})}">
+<form th:method="GET" th:action="@{/books/{id}/edit(id=${book.id})}">
     <input type="submit" value="Редактировать"/>
+</form>
 
-<form th:method="DELETE" th:action="@{/books/{id}(id=${book.getId()()})}">
+<form th:method="DELETE" th:action="@{/books/{id}(id=${book.id})}">
     <input type="submit" value="Удалить"/>
 </form>
+
 </body>
 </html>

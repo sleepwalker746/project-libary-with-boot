@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ua.august.springcourse.Project2Boot.models.Person;
+import ua.august.springcourse.Project2Boot.entities.Person;
 import ua.august.springcourse.Project2Boot.services.PeopleService;
 
 @Controller

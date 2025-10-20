@@ -7,7 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ua.august.springcourse.Project2Boot.models.Person;
+import ua.august.springcourse.Project2Boot.entities.Person;
 import ua.august.springcourse.Project2Boot.repositories.PeopleRepository;
 import ua.august.springcourse.Project2Boot.services.PeopleService;
 

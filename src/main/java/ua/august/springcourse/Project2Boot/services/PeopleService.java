@@ -3,8 +3,8 @@ package ua.august.springcourse.Project2Boot.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ua.august.springcourse.Project2Boot.models.Book;
-import ua.august.springcourse.Project2Boot.models.Person;
+import ua.august.springcourse.Project2Boot.entities.Book;
+import ua.august.springcourse.Project2Boot.entities.Person;
 import ua.august.springcourse.Project2Boot.repositories.PeopleRepository;
 
 
@@ -17,17 +17,17 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class PeopleService {
 
-        private final PeopleRepository peopleRepository;
+    private final PeopleRepository peopleRepository;
 
     @Autowired
     public PeopleService(PeopleRepository peopleRepository) {
         this.peopleRepository = peopleRepository;
     }
+
     public List<Person> findAll() { return peopleRepository.findAll(); }
 
     public Person findOne(int id) {
         Optional<Person> foundPerson = peopleRepository.findById(id);
-
         return foundPerson.orElse(null);
     }
 
@@ -48,8 +48,10 @@ public class PeopleService {
     }
 
     public List<Book> getBooksByPersonId(int id) {
+
         return peopleRepository.findById(id)
                 .map(Person::getBooks)
                 .orElse(Collections.emptyList());
+
     }
 }

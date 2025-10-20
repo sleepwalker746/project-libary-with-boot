@@ -7,10 +7,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ua.august.springcourse.Project2Boot.models.Book;
-import ua.august.springcourse.Project2Boot.models.Person;
+import ua.august.springcourse.Project2Boot.entities.Book;
+import ua.august.springcourse.Project2Boot.entities.Person;
 import ua.august.springcourse.Project2Boot.repositories.BookRepository;
-
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +29,7 @@ public class BookService {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
         return bookRepository.findAll(pageable);
     }
+
     public Book findOne(int id) {
         Optional<Book> foundBook = bookRepository.findById(id);
         return foundBook.orElse(null);
@@ -38,11 +39,13 @@ public class BookService {
     public void save(Book book) {
         bookRepository.save(book);
     }
+
     @Transactional
     public void update(int id, Book updatedBook){
         updatedBook.setId(id);
         bookRepository.save(updatedBook);
     }
+
     @Transactional
     public void delete (int id) {
         bookRepository.deleteById(id);
@@ -53,6 +56,7 @@ public class BookService {
         return bookRepository.findById(id)
                 .map(Book::getOwner);
     }
+
     @Transactional
     public void release(int id) {
         bookRepository.findById(id).ifPresent(book -> {
@@ -60,13 +64,24 @@ public class BookService {
             bookRepository.save(book);
         });
     }
+
     @Transactional
     public void assign(int id, Person selectedPerson) {
         bookRepository.findById(id).ifPresent(book -> {
             book.setOwner(selectedPerson);
+            book.setTookAt(OffsetDateTime.now());
             bookRepository.save(book);
         });
     }
+
+    public boolean isOverdue(int id) {
+        Book book = findOne(id);
+        if(book == null || book.getTookAt() == null) {
+            return false;
+        }
+        return book.getTookAt().isBefore(OffsetDateTime.now().minusDays(10));
+    }
+
     public List<Book> searchBooks(String letter) {
         return bookRepository.findByTitleIgnoreCaseStartingWith(letter);
     }
