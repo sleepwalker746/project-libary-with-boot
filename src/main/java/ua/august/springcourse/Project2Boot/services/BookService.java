@@ -61,6 +61,7 @@ public class BookService {
     public void release(int id) {
         bookRepository.findById(id).ifPresent(book -> {
             book.setOwner(null);
+            book.setTookAt(null);
             bookRepository.save(book);
         });
     }
